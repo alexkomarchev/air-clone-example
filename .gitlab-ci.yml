@@ -1,0 +1,98 @@
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+default:
+  image: node:18.14.0-alpine
+
+before_script:
+  - npm install
+  - npm install react-scripts@3.4.1 -g
+
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+eslint:
+  stage: lint
+  script:
+    - npx eslint --fix
+  when: always
+
+next_lint:
+  stage: lint
+  script:
+    - npx eslint --fix
+    - npm run lint --fix
+  when: always
+
+build_dev:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:18.09.7-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - export $(cat .env.dev | xargs)
+    - cp .env.dev .env.production
+    - docker build -t $IMAGE_TAG --output type=docker . 
+    - docker push $IMAGE_TAG
+  only:
+    - develop
+  when: on_success
+
+build_main:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:18.09.7-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - export $(cat .env.prod | xargs)
+    - cp .env.prod .env.production
+    - docker build -t $IMAGE_TAG --output type=docker . 
+    - docker push $IMAGE_TAG
+  only:
+    - main
+  when: on_success
+
+deploy_dev:
+  stage: deploy
+  image: ubuntu:latest
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get update -y && apt-get install -y sshpass
+    - script -c "sshpass -p "$DEV_SERVER_PASSWORD" scp -vr docker-compose.yml $DEV_SERVER_USER@$DEV_SERVER_IP:/root/air-autodeploy/air-frontend/docker-compose.yml" /dev/null
+    - script -c "sshpass -p "$DEV_SERVER_PASSWORD" ssh -v -o StrictHostKeyChecking=no $DEV_SERVER_USER@$DEV_SERVER_IP 'bash -s' < deploy.sh" /dev/null
+  only:
+    - develop
+  when: on_success
+
+deploy_main:
+  stage: deploy
+  image: ubuntu:latest
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get update -y && apt-get install -y sshpass
+    - script -c "sshpass -p "$PROD_SERVER_PASSWORD" scp -vr docker-compose.yml $PROD_SERVER_USER@$PROD_SERVER_IP:/root/air-autodeploy/air-frontend/docker-compose.yml" /dev/null
+    - script -c "sshpass -p "$PROD_SERVER_PASSWORD" ssh -v -o StrictHostKeyChecking=no $PROD_SERVER_USER@$PROD_SERVER_IP 'bash -s' < deploy.sh" /dev/null
+  only:
+    - main
+  when: on_success

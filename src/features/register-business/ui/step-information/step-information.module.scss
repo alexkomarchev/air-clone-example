@@ -1,0 +1,20 @@
+.element {
+	margin-top: 20px;
+	p {
+		color: var(--text-color-main);
+		font-size: 17px;
+		margin-bottom: 5px;
+		font-weight: 500;
+	}
+
+	@media (max-width: 800px) {
+		p {
+			font-size: 16px;
+		}
+	}
+}
+.btn {
+	margin-top: 25px;
+	text-align: center;
+	width: 100%;
+}

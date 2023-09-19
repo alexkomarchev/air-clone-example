@@ -1,0 +1,23 @@
+.modal {
+	width: auto;
+	.wrap {
+		padding: 40px;
+		width: 30vw;
+		@media (max-width: 800px) {
+			width: 85vw;
+		}
+		text-align: left;
+	}
+	.MuiDialog-container {
+		.MuiDialog-paper {
+			background-color: red;
+		}
+	}
+
+	.close {
+		cursor: pointer;
+		position: absolute;
+		top: 22px;
+		right: 25px;
+	}
+}

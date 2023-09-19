@@ -1,0 +1,33 @@
+.wrap {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	@media (max-width: 766px) {
+		height: 70vh;
+		width: 100%;
+		overflow-y: scroll;
+		text-align: center;
+		justify-content: center;
+	}
+	div {
+		width: 24%;
+		@media (max-width: 766px) {
+			width: 100%;
+		}
+		object-fit: cover;
+		.image {
+			object-fit: cover;
+			margin: 10px 0;
+			width: 100%;
+		}
+
+		@media (max-width: 1700px) {
+			width: 32%;
+		}
+
+		@media (max-width: 766px) {
+			text-align: center;
+			width: 80%;
+		}
+	}
+}

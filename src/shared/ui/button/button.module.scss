@@ -1,0 +1,22 @@
+.button {
+	background-color: var(--text-color-purple);
+	border-radius: 13px;
+	color: white;
+	width: 120px;
+	height: 43px;
+	font-size: 12px;
+	font-weight: 600;
+	&:hover {
+		background-color: var(--text-color-purple);
+		opacity: 0.9;
+	}
+}
+.buttonGray {
+	@extend .button;
+	background-color: var(--bg-color-button-gray);
+	color: var(--color-btn-gray);
+	&:hover {
+		background-color: var(--bg-color-button-gray);
+		opacity: 0.9;
+	}
+}

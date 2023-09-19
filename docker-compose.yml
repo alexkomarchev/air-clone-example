@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+
+  frontend:
+    restart: always
+    image: registry.gitlab.com/air5442420/air-frontend:$TAG
+    command: npm start
+    container_name: air_frontend
+    env_file:
+      - ./.env.production
+    ports:
+      - "3000:3000"
+    stdin_open: true
+
+networks:
+  default:
+    name: air-backend_default
+    external: true

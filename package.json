@@ -1,0 +1,69 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "precommit": "lint-staged",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.7",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.12",
+    "@mui/styled-engine-sc": "^5.11.11",
+    "@mui/x-date-pickers": "^6.6.0",
+    "@next/bundle-analyzer": "^13.4.3",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@sentry/nextjs": "^7.59.2",
+    "@types/cookie": "^0.5.1",
+    "@types/node": "18.15.2",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "axios": "^0.24.0",
+    "cookie": "^0.5.0",
+    "dayjs": "^1.11.8",
+    "eslint-config-next": "13.2.4",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "i18next": "^23.4.1",
+    "intro.js-react": "^1.0.0",
+    "lodash.debounce": "^4.0.8",
+    "next": "13.2.4",
+    "next-auth": "^4.20.1",
+    "next-i18next": "^14.0.0",
+    "react": "18.2.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
+    "react-i18next": "^13.0.3",
+    "react-markdown": "^8.0.7",
+    "react-redux": "^8.0.5",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^3.0.1",
+    "sass": "^1.63.4",
+    "styled-components": "^5.3.9"
+  },
+  "devDependencies": {
+    "@types/intro.js": "^5.1.1",
+    "@types/lodash": "^4.14.195",
+    "@types/react-syntax-highlighter": "^15.5.7",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
+    "typescript": "5.1.3"
+  }
+}
